@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="card mt-4">
+    <div class="card-body row justify-content-center">
+      <h3 class="card-title offset-3 mt-2">Crear Post</h3>
+      <form
+        class="row col-md-9"
+        [formGroup]="form"
+        (ngSubmit)="createOrUpdate()"
+      >
+        <div class="row justify-content-start">
+          <div class="formGroup col-md-4">
+            <label for="title">Título:</label>
+            <input type="text" id="title" placeholder="Inserta título" formControlName="title" class="form-control"
+              [ngClass]="{
+                'border border-danger':
+                  this.form.get('title')?.invalid &&
+                  this.form.get('title')?.touched
+              }"
+            />
+            @if(this.form.get('title')?.invalid &&
+            this.form.get('title')?.touched) {
+            <span class="text-danger">*El título no puede quedar vacío</span>
+            }
+          </div>
+        </div>
+        <div class="formGroup col-md-12">
+          <label for="content">Contenido:</label>
+          <textarea class="form-control" rows="5" d="content" placeholder="Inserta contenido" formControlName="content" class="form-control"
+          [ngClass]="{
+            'border border-danger':
+              this.form.get('content')?.invalid &&
+              this.form.get('content')?.touched
+          }"></textarea>
+          @if(this.form.get('content')?.invalid &&
+          this.form.get('content')?.touched) {
+          <span class="text-danger">*El contenido no puede quedar vacío</span>
+          }
+        </div>
+        <div class="row justify-content-around">
+          <button
+            class="btn btn-primary col-md-2 mt-4"
+            type="submit"
+            [disabled]="form.invalid"
+          >
+            Crear
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger col-md-2 mt-4"
+            (click)="goBack()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

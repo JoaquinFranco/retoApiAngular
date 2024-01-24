@@ -1,0 +1,28 @@
+<div class="container card card-body mt-4">
+    <h3 class="card-title">
+        Detalle del post
+    </h3>
+    <div class="row">
+        <div class="card card-body border-dark">
+            <div class="row  card-title">
+                <div class="col-md-3">
+                    Título:
+                </div>
+                <div class=" col-md-9">
+                    <span>{{ post.title }}</span>
+                </div>
+            </div>
+            <div class="row mt-4 card-text">
+                <div class="col-md-3">
+                    Contenido:
+                </div>
+                <div class=" col-md-9">
+                    <span>{{ post.body }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button class="btn btn-info col-md-2 mt-4" (click)="volver()">Volver</button>
+        </div>
+    </div>
+</div>
