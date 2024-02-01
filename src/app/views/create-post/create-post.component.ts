@@ -14,13 +14,14 @@ export class CreatePostComponent implements OnInit {
   post: Post = { id: 0, title: '', body: '' };
   postArr: Post[] = [];
   id?: number;
+  url: string = '';
 
   constructor(
-    private postService: PostService,
+    public postService: PostService,
     private utils: UtilsService,
-    private router: Router,
+    public router: Router,
     private fb: NonNullableFormBuilder,
-    private activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute
   ) {}
 
   form = this.fb.group({
@@ -33,22 +34,28 @@ export class CreatePostComponent implements OnInit {
       this.postArr = response;
     });
 
+    this.url = this.router.url;
+
     this.getIdFromUrl();
   }
 
   getIdFromUrl() {
-    if (this.router.url !== '/create') {
+    if (this.url !== '/create') {
       this.activatedRoute.paramMap.subscribe((parametros: ParamMap) => {
         this.id = parseInt(parametros.get('id')!);
-        this.postService.getPost(this.id).subscribe((response) => {
-          this.post = response;
-          this.form.patchValue({
-            title: this.post.title,
-            content: this.post.body,
-          });
-        });
+        this.getSelectedPost(this.id);
       });
     }
+  }
+
+  getSelectedPost(id: number) {
+    this.postService.getPost(id).subscribe((response) => {
+      this.post = response;
+      this.form.patchValue({
+        title: this.post.title,
+        content: this.post.body,
+      });
+    });
   }
 
   createOrUpdate() {
