@@ -8,14 +8,14 @@ import { Post } from '../models/post';
 })
 export class PostService {
   private postsUrl: string = 'https://jsonplaceholder.typicode.com/posts';
-  constructor(private http: HttpClient) {}
+  constructor(public http: HttpClient) {}
 
   getPost(id: number): Observable<Post> {
     return this.http.get<Post>(`${this.postsUrl}/${id}`);
   }
 
-  deletePost(id: number) {
-    this.http.delete<Post>(`${this.postsUrl}/${id}`);
+  deletePost(id: number): Observable<Post> {
+    return this.http.delete<Post>(`${this.postsUrl}/${id}`);
   }
 
   getPosts(): Observable<Post[]> {

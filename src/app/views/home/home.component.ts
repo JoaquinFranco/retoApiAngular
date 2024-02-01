@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
   }
 
   remove(id: number) {
-    this.post.deletePost(id);
+    this.post.deletePost(id).subscribe((response) => {});
   }
 
   viewPost(id: number) {
