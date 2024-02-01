@@ -10,26 +10,32 @@ import { PostService } from '../../services/post.service';
 })
 export class DetailPostComponent implements OnInit {
   post: Post = { id: 0, title: '', body: '' };
+  url: string = '';
 
   constructor(
-    private postService: PostService,
-    private router: Router,
+    public postService: PostService,
+    public router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.url = this.router.url;
     this.getIdFromUrl();
   }
 
   getIdFromUrl() {
-    if (this.router.url !== '/create') {
+    if (this.url !== '/create') {
       this.activatedRoute.paramMap.subscribe((parametros: ParamMap) => {
         this.post.id = parseInt(parametros.get('id')!);
-        this.postService.getPost(this.post.id).subscribe((response) => {
-          this.post = response;
-        });
+        this.getSelectedPost();
       });
     }
+  }
+
+  getSelectedPost() {
+    this.postService.getPost(this.post.id).subscribe((response) => {
+      this.post = response;
+    });
   }
 
   volver() {
