@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app.routes';
 import { PostService } from './services/post.service';
 import { CreatePostComponent } from './views/create-post/create-post.component';
 import { DetailPostComponent } from './views/detail-post/detail-post.component';
+import { FormAnidadoComponent } from './views/form-anidado/form-anidado.component';
 import { HomeComponent } from './views/home/home.component';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { HomeComponent } from './views/home/home.component';
     HomeComponent,
     CreatePostComponent,
     DetailPostComponent,
+    FormAnidadoComponent,
   ],
   bootstrap: [AppComponent],
   providers: [PostService],

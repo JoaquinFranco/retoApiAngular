@@ -1,0 +1,174 @@
+<div class="container">
+  <div class="card mt-4">
+    <div class="card-body row justify-content-center">
+      <h3 class="card-title offset-3 mt-2">Formulario</h3>
+      <form class="row col-md-9" [formGroup]="formUser" (ngSubmit)="submit()">
+        <div class="formGroup col-md-6">
+          <label for="title">Nombre:</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="Inserta nombre"
+            formControlName="name"
+            class="form-control"
+            [ngClass]="{
+              'border border-danger':
+                this.formUser.get('name')?.invalid &&
+                this.formUser.get('name')?.touched
+            }"
+          />
+          @if(this.formUser.get('name')?.invalid &&
+          this.formUser.get('name')?.touched) {
+          <span class="text-danger">*El nombre no puede quedar vacío</span>
+          }
+        </div>
+        <div class="formGroup col-md-6">
+          <label for="content">Apellidos:</label>
+          <input
+            type="text"
+            id="lasName"
+            placeholder="Inserta apellidos"
+            formControlName="lastName"
+            class="form-control"
+            [ngClass]="{
+              'border border-danger':
+                this.formUser.get('lastName')?.invalid &&
+                this.formUser.get('lastName')?.touched
+            }"
+          />
+          @if(this.formUser.get('lastName')?.invalid &&
+          this.formUser.get('lastName')?.touched) {
+          <span class="text-danger">*El apellido no puede quedar vacío</span>
+          }
+        </div>
+        <div
+          formGroupName="bankDetail"
+          class="card-body row justify-content-center"
+        >
+          <h5 class="card-title mt-2">Datos bancarios</h5>
+          <div class="formGroup col-md-6">
+            <label for="bankName">Nombre del banco:</label>
+            <input
+              type="text"
+              id="bankName"
+              placeholder="Inserta nombre del banco"
+              formControlName="bankName"
+              class="form-control"
+              [ngClass]="{
+                'border border-danger':
+                  this.formUser.controls.bankDetail.get('bankName')?.invalid &&
+                  this.formUser.controls.bankDetail.get('bankName')?.touched
+              }"
+            />
+          </div>
+          @if(this.formUser.controls.bankDetail.get('bankName')?.invalid &&
+          this.formUser.controls.bankDetail.get('bankName')?.touched) {
+          <span class="text-danger"
+            >*El nombre del banco no puede quedar vacío</span
+          >
+          }
+          <div class="formGroup col-md-6">
+            <label for="bankName">Iban:</label>
+            <input
+              type="text"
+              id="iban"
+              placeholder="Inserta Iban"
+              formControlName="iban"
+              class="form-control"
+              [ngClass]="{
+                'border border-danger':
+                  this.formUser.controls.bankDetail.get('iban')?.invalid &&
+                  this.formUser.controls.bankDetail.get('iban')?.touched
+              }"
+            />
+          </div>
+          @if(this.formUser.controls.bankDetail.get('iban')?.invalid &&
+          this.formUser.controls.bankDetail.get('iban')?.touched) {
+          <span class="text-danger">*El iban no puede quedar vacío</span>
+          }
+        </div>
+        <div formArrayName="address" class="card-body container">
+          <div
+            class="row"
+            *ngFor="let item of formUser.controls.address.controls; index as i"
+            [formGroupName]="i"
+          >
+            <div class="formGroup col-md-6">
+              <label for="street">Calle:</label>
+              <input
+                type="text"
+                id="street"
+                placeholder="Inserta Direccion"
+                formControlName="street"
+                class="form-control"
+                [ngClass]="{
+                  'border border-danger':
+                    item.get('street')?.invalid && item.get('street')?.touched
+                }"
+              />
+            </div>
+            @if(item.get('street')?.invalid && item.get('street')?.touched) {
+            <span class="text-danger">*La dirección no puede quedar vacía</span>
+            }
+            <div class="formGroup col-md-2">
+              <label for="number">Número:</label>
+              <input
+                type="number"
+                id="number"
+                placeholder="Inserta Numero"
+                formControlName="number"
+                class="form-control"
+                [ngClass]="{
+                  'border border-danger':
+                    item.get('number')?.invalid && item.get('number')?.touched
+                }"
+              />
+            </div>
+            @if(item.get('number')?.invalid && item.get('number')?.touched) {
+            <span class="text-danger">*El número no puede quedar vacia</span>
+            }
+            <div class="formGroup col-md-2">
+              <label for="zip">Zip:</label>
+              <input
+                type="text"
+                id="zip"
+                placeholder="Zip"
+                formControlName="zip"
+                class="form-control"
+                [ngClass]="{
+                  'border border-danger':
+                    item.get('zip')?.invalid && item.get('zip')?.touched
+                }"
+              />
+            </div>
+            @if(item.get('zip')?.invalid && item.get('zip')?.touched) {
+            <span class="text-danger">*El Zip no puede quedar vacia</span>
+            }
+            <div class="col-md-2 d-flex align-items-end">
+              <button class="btn btn-danger" (click)="deleteAddress(i)">
+                remove
+              </button>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-primary mt-2"
+            (click)="addAddress()"
+          >
+            add
+          </button>
+        </div>
+        <div class="row justify-content-around">
+          <button
+            class="btn btn-primary col-md-2 mt-4"
+            type="submit"
+            [disabled]="formUser.invalid"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+      {{ infoFormulario }}
+    </div>
+  </div>
+</div>

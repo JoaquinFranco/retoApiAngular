@@ -10,6 +10,6 @@ export class AppComponent implements OnInit {
   constructor(public router: Router) {}
 
   ngOnInit(): void {
-    this.router.navigateByUrl('/create');
+    this.router.navigateByUrl('/form');
   }
 }
