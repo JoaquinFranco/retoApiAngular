@@ -2,9 +2,32 @@ import { Component } from '@angular/core';
 import {
   FormArray,
   FormControl,
+  FormGroup,
   NonNullableFormBuilder,
   Validators,
 } from '@angular/forms';
+
+interface Dir {
+  street: FormControl<string>;
+  number: FormControl<number>;
+  zip: FormControl<string>;
+}
+
+interface Formulario {
+  name: string;
+  lastName: string;
+  bankDetails: {
+    bankName: string;
+    iban: string;
+  };
+  address: Direccion[];
+}
+
+interface Direccion {
+  street: string;
+  number: number;
+  zip: string;
+}
 
 @Component({
   selector: 'app-form-anidado',
@@ -14,21 +37,7 @@ import {
 export class FormAnidadoComponent {
   infoFormulario: string = '';
 
-  formShowed!: {
-    name?: string;
-    lastName?: string;
-    bankDetails: {
-      bankName?: string;
-      iban?: string;
-    };
-    address: [
-      {
-        street?: string;
-        number?: string;
-        zip?: string;
-      }
-    ];
-  };
+  formShowed!: Formulario;
 
   constructor(private fb: NonNullableFormBuilder) {}
 
@@ -39,11 +48,11 @@ export class FormAnidadoComponent {
       bankName: ['', [Validators.required]],
       iban: ['', [Validators.required]],
     }),
-    address: this.fb.array([]),
+    address: this.fb.array<FormGroup<Dir>>([]),
   });
 
   get address() {
-    return this.formUser.controls['address'] as FormArray;
+    return this.formUser.controls['address'] as FormArray<FormGroup<Dir>>;
   }
 
   addAddress() {
@@ -61,31 +70,71 @@ export class FormAnidadoComponent {
 
   submit() {
     this.formShowed = {
-      name: this.formUser.value.name,
-      lastName: this.formUser.value.lastName,
+      name: this.formUser.value.name!,
+      lastName: this.formUser.value.lastName!,
       bankDetails: this.getBankDetails(),
-      address: <any>[],
+      address: [],
     };
-    this.formUser.controls.address.controls.forEach((control: FormControl) => {
-      let dirObject = this.getDirObject(control);
-      this.formShowed.address.push(dirObject);
-    });
+    this.formUser.controls.address.controls.forEach(
+      (control: FormGroup<Dir>) => {
+        let dirObject = this.getDirObject(control);
+        this.formShowed.address.push(dirObject);
+      }
+    );
 
     this.infoFormulario = JSON.stringify(this.formShowed);
   }
 
-  private getDirObject(control: FormControl<any>) {
+  private getDirObject(control: FormGroup<Dir>) {
     return {
-      street: control.value.street,
-      number: control.value.number,
-      zip: control.value.zip,
+      street: control.value.street!,
+      number: control.value.number!,
+      zip: control.value.zip!,
     };
   }
 
   private getBankDetails() {
     return {
-      bankName: this.formUser.value.bankDetail?.bankName,
-      iban: this.formUser.value.bankDetail?.iban,
+      bankName: this.formUser.value.bankDetail?.bankName!,
+      iban: this.formUser.value.bankDetail?.iban!,
     };
+  }
+
+  rellenar() {
+    this.formUser.controls.address.clear();
+    let obj = {
+      name: 'Prueba',
+      lastName: 'Prueba',
+      bankDetail: {
+        bankName: 'BankName',
+        iban: 'ES000049000000000000',
+      },
+      address: [
+        {
+          street: 'calle',
+          number: 0,
+          zip: '41089',
+        },
+        {
+          street: 'calle',
+          number: 0,
+          zip: '41089',
+        },
+        {
+          street: 'calle',
+          number: 0,
+          zip: '41089',
+        },
+      ],
+    };
+    obj.address.forEach((element) => {
+      this.addAddress();
+    });
+    this.formUser.patchValue(obj);
+  }
+
+  limpiar() {
+    this.formUser.controls.address.clear();
+    this.formUser.reset();
   }
 }
